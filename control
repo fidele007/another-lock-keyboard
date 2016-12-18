@@ -1,0 +1,10 @@
+Package: com.fidele007.anotherlockkeyboard
+Name: AnotherLockKeyboard
+Depends: mobilesubstrate
+Conflicts: ws.hbang.lockkeyboard
+Version: 0.0.1
+Architecture: iphoneos-arm
+Description: A variance of system wide lock keyboard that respects the light and dark keyboard. This tweak is heavily inspired by HashBang's LockKeyboard tweak.
+Maintainer: fidele007 <kforcefidele@yahoo.com>
+Author: fidele007 <kforcefidele@yahoo.com>
+Section: Tweaks
