@@ -1,8 +1,6 @@
 #import <AppSupport/CPBitmapStore.h>
 #import <UIKit/UIKeyboardCache.h>
 #import <UIKit/UIKBRenderConfig.h>
-#import <UIKit/UIKBRenderFactoryiPadPasscode.h>
-#import <UIKit/UIKBRenderFactoryiPadLandscapePasscode.h>
 
 @interface UIKBBackgroundView
 @property (nonatomic, retain) UIKBRenderConfig *renderConfig;
@@ -27,11 +25,31 @@
 - (void)setBackdropEffectView:(_UIBackdropEffectView *)arg1;
 @end
 
+@interface UIKBRenderTraits : NSObject
+- (void)setBlurBlending:(BOOL)arg1;
+- (void)setBlendForm:(int)arg1;
+@end
+
 @interface UIKBRenderFactory
 @property (nonatomic, retain) UIKBRenderConfig *renderConfig;
 @end
 
+@interface UIKBRenderFactoryiPhone : UIKBRenderFactory
+@end
+
+@interface UIKBRenderFactoryiPad : UIKBRenderFactory
+@end
+
+@interface UIKBRenderFactoryiPadLandscape : UIKBRenderFactory
+@end
+
 @interface UIKBRenderFactoryiPhonePasscode : UIKBRenderFactory
+@end
+
+@interface UIKBRenderFactoryiPadPasscode : UIKBRenderFactory
+@end
+
+@interface UIKBRenderFactoryiPadLandscapePasscode : UIKBRenderFactory
 @end
 
 #pragma mark - Keyboard hooks
@@ -51,6 +69,14 @@ BOOL override = NO;
   }
 }
 
+- (id)_traitsForKey:(id)arg1 onKeyplane:(id)arg2 {
+  UIKBRenderTraits *traits = %orig;
+  UIKBRenderConfig *renderConfig = self.renderConfig;
+  if ([renderConfig lightKeyboard]) {
+    [traits setBlurBlending:YES];
+  }
+  return traits;
+}
 %end
 
 %hook UIKBRenderFactoryiPad
@@ -59,6 +85,14 @@ BOOL override = NO;
   return override ? %orig : [%c(UIKBRenderFactoryiPadPasscode) alloc];
 }
 
+- (id)_traitsForKey:(id)arg1 onKeyplane:(id)arg2 {
+  UIKBRenderTraits *traits = %orig;
+  UIKBRenderConfig *renderConfig = self.renderConfig;
+  if ([renderConfig lightKeyboard]) {
+    [traits setBlurBlending:YES];
+  }
+  return traits;
+}
 %end
 
 %hook UIKBRenderFactoryiPadLandscape
@@ -67,12 +101,15 @@ BOOL override = NO;
   return override ? %orig : [%c(UIKBRenderFactoryiPadLandscapePasscode) alloc];
 }
 
+- (id)_traitsForKey:(id)arg1 onKeyplane:(id)arg2 {
+  UIKBRenderTraits *traits = %orig;
+  UIKBRenderConfig *renderConfig = self.renderConfig;
+  if ([renderConfig lightKeyboard]) {
+    [traits setBlurBlending:YES];
+  }
+  return traits;
+}
 %end
-
-@interface UIKBRenderTraits : NSObject
-- (void)setBlurBlending:(BOOL)arg1;
-- (void)setBlendForm:(int)arg1;
-@end
 
 %hook UIKBRenderFactoryiPhonePasscode
 
@@ -99,6 +136,14 @@ BOOL override = NO;
   return %orig;
 }
 
+- (id)_traitsForKey:(id)arg1 onKeyplane:(id)arg2 {
+  UIKBRenderTraits *traits = %orig;
+  UIKBRenderConfig *renderConfig = self.renderConfig;
+  if ([renderConfig lightKeyboard]) {
+    [traits setBlurBlending:YES];
+  }
+  return traits;
+}
 %end
 
 %hook UIKBRenderFactoryiPadLandscapePasscode
@@ -108,6 +153,14 @@ BOOL override = NO;
   return %orig;
 }
 
+- (id)_traitsForKey:(id)arg1 onKeyplane:(id)arg2 {
+  UIKBRenderTraits *traits = %orig;
+  UIKBRenderConfig *renderConfig = self.renderConfig;
+  if ([renderConfig lightKeyboard]) {
+    [traits setBlurBlending:YES];
+  }
+  return traits;
+}
 %end
 
 #pragma mark - Render config
@@ -134,7 +187,7 @@ BOOL override = NO;
 }
 %end
 
-%hook UIKBBackdropViewgi
+%hook UIKBBackdropView
 - (id)initWithFrame:(id)arg1 style:(int)arg2 primaryBackdrop:(BOOL)arg3 {
   UIKBBackdropView *orig = %orig;
   CGFloat white;
