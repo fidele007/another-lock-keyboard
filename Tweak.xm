@@ -29,7 +29,13 @@
 - (void)setBackdropEffectView:(_UIBackdropEffectView *)arg1;
 @end
 
+@interface UIKBGradient : NSObject
++ (id)gradientWithFlatColor:(id)arg1;
+@end
+
 @interface UIKBRenderTraits : NSObject
+@property (nonatomic, retain) UIKBGradient *layeredBackgroundGradient;
+@property (nonatomic, retain) UIKBGradient *layeredForegroundGradient;
 - (void)setBlurBlending:(BOOL)arg1;
 - (void)setBlendForm:(int)arg1;
 @end
@@ -85,6 +91,15 @@ BOOL override = NO;
   }
   return traits;
 }
+
+- (id)shiftLockControlKeyTraits {
+  UIKBRenderTraits *traits = %orig;
+  UIKBRenderConfig *renderConfig = self.renderConfig;
+  if ([renderConfig lightKeyboard]) {
+    traits.layeredForegroundGradient = [%c(UIKBGradient) gradientWithFlatColor:@"UIKBColorBlack"];
+  }
+  return traits;
+}
 %end
 
 %hook UIKBRenderFactoryiPad
@@ -101,6 +116,15 @@ BOOL override = NO;
   }
   return traits;
 }
+
+- (id)shiftLockControlKeyTraits {
+  UIKBRenderTraits *traits = %orig;
+  UIKBRenderConfig *renderConfig = self.renderConfig;
+  if ([renderConfig lightKeyboard]) {
+    traits.layeredForegroundGradient = [%c(UIKBGradient) gradientWithFlatColor:@"UIKBColorBlack"];
+  }
+  return traits;
+}
 %end
 
 %hook UIKBRenderFactoryiPadLandscape
@@ -114,6 +138,15 @@ BOOL override = NO;
   UIKBRenderConfig *renderConfig = self.renderConfig;
   if ([renderConfig lightKeyboard]) {
     [traits setBlurBlending:YES];
+  }
+  return traits;
+}
+
+- (id)shiftLockControlKeyTraits {
+  UIKBRenderTraits *traits = %orig;
+  UIKBRenderConfig *renderConfig = self.renderConfig;
+  if ([renderConfig lightKeyboard]) {
+    traits.layeredForegroundGradient = [%c(UIKBGradient) gradientWithFlatColor:@"UIKBColorBlack"];
   }
   return traits;
 }
@@ -135,6 +168,14 @@ BOOL override = NO;
   return traits;
 }
 
+- (id)shiftLockControlKeyTraits {
+  UIKBRenderTraits *traits = %orig;
+  UIKBRenderConfig *renderConfig = self.renderConfig;
+  if ([renderConfig lightKeyboard]) {
+    traits.layeredForegroundGradient = [%c(UIKBGradient) gradientWithFlatColor:@"UIKBColorBlack"];
+  }
+  return traits;
+}
 %end
 
 %hook UIKBRenderFactoryiPadPasscode
@@ -152,6 +193,15 @@ BOOL override = NO;
   }
   return traits;
 }
+
+- (id)shiftLockControlKeyTraits {
+  UIKBRenderTraits *traits = %orig;
+  UIKBRenderConfig *renderConfig = self.renderConfig;
+  if ([renderConfig lightKeyboard]) {
+    traits.layeredForegroundGradient = [%c(UIKBGradient) gradientWithFlatColor:@"UIKBColorBlack"];
+  }
+  return traits;
+}
 %end
 
 %hook UIKBRenderFactoryiPadLandscapePasscode
@@ -166,6 +216,15 @@ BOOL override = NO;
   UIKBRenderConfig *renderConfig = self.renderConfig;
   if ([renderConfig lightKeyboard]) {
     [traits setBlurBlending:YES];
+  }
+  return traits;
+}
+
+- (id)shiftLockControlKeyTraits {
+  UIKBRenderTraits *traits = %orig;
+  UIKBRenderConfig *renderConfig = self.renderConfig;
+  if ([renderConfig lightKeyboard]) {
+    traits.layeredForegroundGradient = [%c(UIKBGradient) gradientWithFlatColor:@"UIKBColorBlack"];
   }
   return traits;
 }
