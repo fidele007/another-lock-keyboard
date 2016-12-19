@@ -255,6 +255,16 @@ BOOL override = NO;
 %end
 
 %hook UIKBBackdropView
+- (void)layoutSubviews {
+  %orig;
+  CGFloat white;
+  CGFloat alpha;
+  [[self.grayscaleTintView backgroundColor] getWhite:&white alpha:&alpha];
+  if (white > 0.5) {
+    self.grayscaleTintView.backgroundColor = [UIColor colorWithWhite:0.95 alpha:1];
+  }
+}
+
 - (id)initWithFrame:(id)arg1 style:(int)arg2 primaryBackdrop:(BOOL)arg3 {
   UIKBBackdropView *orig = %orig;
   CGFloat white;
