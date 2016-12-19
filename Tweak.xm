@@ -239,6 +239,10 @@ BOOL override = NO;
 %end
 
 %hook UIKBRenderConfig
+- (BOOL)lightKeyboard {
+  return NO;
+}
+
 - (NSInteger)forceQuality {
   if ([self lightKeyboard]) {
     return 10;
@@ -262,6 +266,9 @@ BOOL override = NO;
   [[self.grayscaleTintView backgroundColor] getWhite:&white alpha:&alpha];
   if (white > 0.5) {
     self.grayscaleTintView.backgroundColor = [UIColor colorWithWhite:0.95 alpha:1];
+  } else {
+    // UIDeviceWhiteColorSpace 0.11 0.73
+    self.grayscaleTintView.backgroundColor = [UIColor colorWithWhite:0.05 alpha:alpha];
   }
 }
 
