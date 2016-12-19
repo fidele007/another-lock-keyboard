@@ -1,8 +1,12 @@
 #import <AppSupport/CPBitmapStore.h>
 #import <UIKit/UIKeyboardCache.h>
-#import <UIKit/UIKBRenderConfig.h>
 
-@interface UIKBBackgroundView
+@interface UIKBRenderConfig : NSObject
+- (BOOL)lightKeyboard;
+- (BOOL)whiteText;
+@end
+
+@interface UIKBBackgroundView : UIView
 @property (nonatomic, retain) UIKBRenderConfig *renderConfig;
 @end
 
@@ -50,6 +54,10 @@
 @end
 
 @interface UIKBRenderFactoryiPadLandscapePasscode : UIKBRenderFactory
+@end
+
+@interface UIToolbar (AndYou)
+@property (setter=_setBackgroundView:, nonatomic, retain) UIImageView *_backgroundView;
 @end
 
 #pragma mark - Keyboard hooks
@@ -216,6 +224,37 @@ BOOL override = NO;
   }
 
   return %orig;
+}
+%end
+
+#pragma mark - Web Form
+
+%hook UIWebFormAccessory
++ (id)toolbarWithItems:(id)arg1 {
+  UIToolbar *toolbar = %orig;
+  UIKBRenderConfig *renderConfig;
+  object_getInstanceVariable(self, "_renderConfig", (void **)&renderConfig);
+  if (renderConfig && [renderConfig whiteText]) {
+    toolbar.tintColor = [UIColor whiteColor];
+  } else {
+    toolbar.tintColor = [UIColor blackColor];
+  }
+  return toolbar;
+}
+
+- (void)layoutSubviews {
+  %orig;
+
+  UIToolbar *leftToolbar;
+  UIToolbar *rightToolbar;
+  object_getInstanceVariable(self, "_leftToolbar", (void **)&leftToolbar);
+  object_getInstanceVariable(self, "_rightToolbar", (void **)&rightToolbar);
+  if (leftToolbar) {
+    leftToolbar._backgroundView.alpha = 0;
+  }
+  if (rightToolbar) {
+    rightToolbar._backgroundView.alpha = 0;
+  }
 }
 %end
 

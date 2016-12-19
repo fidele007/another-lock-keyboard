@@ -6,7 +6,7 @@ AnotherLockKeyboard_FILES = Tweak.xm
 include $(THEOS_MAKE_PATH)/tweak.mk
 
 after-install::
-	install.exec "killall -9 oursecret"
+	install.exec "killall -9 MobileSafari"
 
 after-stage::
 	$(ECHO_NOTHING)mkdir -p $(THEOS_STAGING_DIR)/DEBIAN$(ECHO_END)
