@@ -261,7 +261,7 @@ BOOL override = NO;
   CGFloat alpha;
   [[self.grayscaleTintView backgroundColor] getWhite:&white alpha:&alpha];
   if (white > 0.5) {
-    self.grayscaleTintView.backgroundColor = [UIColor colorWithWhite:0.95 alpha:1];
+    self.grayscaleTintView.backgroundColor = [UIColor colorWithWhite:0.97 alpha:1];
   }
 }
 
@@ -271,7 +271,7 @@ BOOL override = NO;
   [[orig.grayscaleTintView backgroundColor] getWhite:&white alpha:nil];
   if (white > 0.5) {
     orig.alpha = 0.95;
-    orig.grayscaleTintView.alpha = 0.9;
+    // orig.grayscaleTintView.alpha = 0.8;
   }
 
   return orig;
